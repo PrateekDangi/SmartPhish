@@ -93,9 +93,9 @@ PhishGuard icon will appear in Chrome toolbar.
 1. Open any website
 2. Click the PhishGuard extension
 3. View:
-     * Phishing risk
-     * Confidence score
-     * Feature analysis
+     - Phishing risk
+     - Confidence score
+     - Feature analysis
 OR
 
 Paste a URL manually and click Check.
@@ -107,7 +107,8 @@ Paste a URL manually and click Check.
 PhishGuard uses a Supervised Neural Network (SNN) trained on phishing and legitimate URLs.
 
 The model is evaluated against both:
-     * Real phishing URLs
-     * GAN-generated phishing URLs
+     - Real phishing URLs
+     - GAN-generated phishing URLs
 
 This ensures robustness against zero-day phishing attacks.
+
