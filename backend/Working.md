@@ -104,11 +104,12 @@ Paste a URL manually and click Check.
 
 ## 🧠 Model Details
 
-PhishGuard uses a Supervised Neural Network (SNN) trained on phishing and legitimate URLs.
+#### PhishGuard uses a Supervised Neural Network (SNN) trained on phishing and legitimate URLs.
 
-The model is evaluated against both:
+#### The model is evaluated against both:
      - Real phishing URLs
      - GAN-generated phishing URLs
 
 This ensures robustness against zero-day phishing attacks.
+
 
