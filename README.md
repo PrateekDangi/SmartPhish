@@ -25,6 +25,17 @@ SmartPhish is a GAN-powered phishing URL detection system designed to identify z
 
 ---
 
+## 🧠 Tech Stack
+
+- Python
+- TensorFlow / Keras
+- Flask / FastAPI
+- NumPy, Pandas, Scikit-learn
+- HTML, CSS, JavaScript
+- Chrome Extension (Manifest V3)
+
+---
+
 ## 📊 Performance Summary
 
 | Metric | Value |
@@ -45,30 +56,23 @@ False Negatives | 0
 
 ---
 
-## 📂 Documentation
+## ⚙️ Installation
 
-- Architecture → docs/architecture.md
-- Dataset Info → docs/dataset_info.md
-- Results → docs/results.md
-- Future Work → docs/future_work.md
+### Backend Setup
 
----
+```bash
+pip install -r requirements.txt
+python app.py
+```
 
-## 👥 Contributors
+### Chrome Extension Setup
+```
+1. Open Chrome
+2. Go to chrome://extensions
+3. Enable Developer Mode
+4. Click Load Unpacked
+5. Select extension folder
+```
 
-- Prateek Dangi
-- Vishal Bansal
-- Ujjwal Singh
-- Aparna Kaushik
-
----
-
-## 🏫 Institution
-
-The NorthCap University, Gurugram
-
----
-
-## 📜 License
-
-MIT License
+## 👤 Author
+Prateek Dangi
