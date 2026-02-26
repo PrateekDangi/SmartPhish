@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SmartPhish Detector</title>
+  <style>
+    :root {
+      --bg: #f7f9fc;
+      --text: #222;
+      --card-bg: #ffffff;
+      --small-text: #475569;
+      --bar-bg: #eaeef6;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto;
+      margin: 0;
+      padding: 0;
+      width: 420px;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    body.theme-dark {
+      --bg: #020617;
+      --text: #e5e7eb;
+      --card-bg: #020617;
+      --small-text: #9ca3af;
+      --bar-bg: #1f2937;
+    }
+
+    .header {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg, #10b981, #1e3a8a);
+      color: white;
+    }
+    .header h1 {
+      margin: 0 0 0 10px;
+      font-size: 1.2rem;
+    }
+    .header-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      opacity: 0.9;
+    }
+    .theme-toggle-btn {
+      border-radius: 999px;
+      padding: 4px 8px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.25);
+      color: #e5e7eb;
+      cursor: pointer;
+      font-size: 0.75rem;
+    }
+
+    .content {
+      padding: 14px;
+    }
+    .score-display {
+      display: flex;
+      justify-content: space-between;
+      background: var(--card-bg);
+      padding: 12px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(2, 6, 23, 0.06);
+      margin-bottom: 12px;
+    }
+    .score-value {
+      font-size: 2.4rem;
+      font-weight: 800;
+    }
+    .status-label {
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    .status-low {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .status-medium {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .status-high {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    .param-list {
+      margin-top: 8px;
+    }
+    .parameter-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 8px 0;
+    }
+    .param-bar-container {
+      flex: 1;
+      height: 8px;
+      background: var(--bar-bg);
+      border-radius: 6px;
+      margin: 0 8px;
+      overflow: hidden;
+    }
+    .param-bar {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 0.5s ease;
+    }
+    .small {
+      font-size: 0.85rem;
+      color: var(--small-text);
+    }
+    .manual {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      background: var(--card-bg);
+      color: var(--text);
+    }
+    button {
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: none;
+      background: #1e3a8a;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .footer {
+      font-size: 0.78rem;
+      color: var(--small-text);
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+    <h1>SmartPhish</h1>
+    <div class="header-right">
+      <span id="theme-label">Light</span>
+      <button id="theme-toggle" class="theme-toggle-btn" type="button">Dark</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="score-display">
+      <div>
+        <div class="small">Overall Phishing Risk</div>
+        <div style="display:flex;align-items:center;">
+          <div id="main-score" class="score-value">--</div>
+          <div id="status-label" class="status-label status-medium" style="margin-left:8px">Loading</div>
+        </div>
+      </div>
+      <div style="width:100px; text-align:center;">
+        <div id="score-percent" style="font-weight:700">--%</div>
+        <div style="font-size:0.75rem;color:#6b7280">Confidence</div>
+      </div>
+    </div>
+
+    <div class="param-list" id="parameter-breakdown"></div>
+
+    <div style="margin-top:10px">
+      <div class="small">Model Uncertainty: <span id="uncertainty-value">--%</span></div>
+    </div>
+
+    <p class="small" id="current-url">Checking active tab...</p>
+
+    <div class="manual">
+      <input id="manual-url" placeholder="Add or check URL (paste here)" />
+      <button id="check-btn">Check</button>
+    </div>
+
+    <div style="margin-top:8px; display:flex; gap:8px;">
+      <button id="add-whitelist" style="flex:1;background:#10b981">Add to Whitelist</button>
+      <button id="add-blacklist" style="flex:1;background:#ef4444">Add to Blacklist</button>
+    </div>
+
+    <div class="footer">Open Options page to view lists. Backend: <code>http://127.0.0.1:5000</code></div>
+  </div>
+
+  <!-- Load external script (NO inline script) -->
+  <script src="popup.js"></script>
+</body>
+</html>
